@@ -54,6 +54,7 @@ Client_side.sln
 *.mdb
 *.opendb
 *.VC.db
+**/bin/
 
 # Unity3D generated meta files
 *.pidb.meta
