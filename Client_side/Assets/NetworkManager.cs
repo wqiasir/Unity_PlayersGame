@@ -51,27 +51,30 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    public void ConnectToServer(string nickname)
+    // 原有方法可以保留，但建议标记为 obsolete 或删除
+    public void ConnectToServer(string serverIP, string nickname)
     {
         try
         {
             _shouldExit = false;
             _client = new TcpClient();
-            _client.Connect(serverIP, serverPort);
+            _client.Connect(serverIP, serverPort);   // 使用传入的IP
             _stream = _client.GetStream();
             _isConnected = true;
 
             SendMessageToServer($"LOGIN|{nickname}");
 
             _receiveThread = new Thread(ReceiveData);
-            _receiveThread.IsBackground = true; // ★ 设置为后台线程
+            _receiveThread.IsBackground = true;
             _receiveThread.Start();
 
-            Debug.Log("成功连接到服务器！");
+            Debug.Log($"成功连接到服务器 {serverIP}:{serverPort}");
         }
         catch (Exception e)
         {
             Debug.LogError($"连接服务器失败: {e.Message}");
+            // 连接失败时，可能需要重新显示登录面板
+            // 这里可以触发一个事件让UIManager重新激活登录界面
         }
     }
 

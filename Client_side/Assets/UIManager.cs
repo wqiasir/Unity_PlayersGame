@@ -10,12 +10,17 @@ public class UIManager : MonoBehaviour
 
     [Header("Login UI")]
     public TMP_InputField nicknameInput;
+    public TMP_InputField ipInput;          // ★ 新增：IP输入框
     public Button loginButton;
 
     void Start()
     {
         loginPanel.SetActive(true);
         gamePanel.SetActive(false);
+
+        // ★ 加载上次保存的IP（如果有）
+        string lastIP = PlayerPrefs.GetString("LastServerIP", "127.0.0.1");
+        ipInput.text = lastIP;
 
         loginButton.onClick.AddListener(OnLoginButtonClicked);
     }
@@ -24,14 +29,19 @@ public class UIManager : MonoBehaviour
     {
         string nickname = nicknameInput.text.Trim();
         if (string.IsNullOrEmpty(nickname))
-        {
-            nickname = "Player" + Random.Range(1000, 9999); // 默认昵称
-        }
+            nickname = "Player" + Random.Range(1000, 9999);
 
-        // 连接到服务器
-        NetworkManager.Instance.ConnectToServer(nickname);
+        string serverIP = ipInput.text.Trim();
+        if (string.IsNullOrEmpty(serverIP))
+            serverIP = "127.0.0.1";
 
-        // 切换UI面板
+        // ★ 保存IP供下次使用
+        PlayerPrefs.SetString("LastServerIP", serverIP);
+        PlayerPrefs.Save();
+
+        // ★ 将IP传给NetworkManager
+        NetworkManager.Instance.ConnectToServer(serverIP, nickname);
+
         loginPanel.SetActive(false);
         gamePanel.SetActive(true);
     }
