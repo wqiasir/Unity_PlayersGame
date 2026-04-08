@@ -99,4 +99,5 @@ Client_side.sln
 # Auto-generated scenes by play mode tests
 **/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-**/.vscode/**/build*
+**/.vscode/
+**/build*
