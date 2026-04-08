@@ -101,3 +101,6 @@ Client_side.sln
 
 **/.vscode/
 **/build*
+/Client_side/*.sln
+/Client_side/*.csproj
+
